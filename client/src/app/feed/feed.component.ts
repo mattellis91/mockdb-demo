@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/data/data.service';
 
 @Component({
   selector: 'app-feed',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dataService:DataService) { }
 
   ngOnInit(): void {
+    this.dataService.makeEnpointGetRequest('').subscribe((res) => console.log(res))
   }
 
 }
