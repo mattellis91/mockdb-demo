@@ -8,9 +8,13 @@ export class DataService {
 
   constructor(private http:HttpClient) { }
 
-  makeEnpointGetRequest(url:string) {
-    return this.http.get('http://localhost:3000/api/articles/feed');
+  apiBase = 'http://localhost:3000/api/';
+
+  makeEnpointGetRequest(endpoint:string) {
+    return this.http.get(this.apiBase + endpoint);
   }
 
-  makeEndpointPostRequest(url:string, payload:Record<string, unknown>) {}
+  makeEndpointPostRequest(endpoint:string, payload:Record<string, unknown>) {
+    return this.http.post(this.apiBase + endpoint, payload);
+  }
 }

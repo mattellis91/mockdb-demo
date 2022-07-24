@@ -12,6 +12,7 @@ import { MainComponent } from './main/main.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FeedComponent } from './feed/feed.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,8 @@ import { FeedComponent } from './feed/feed.component'
   imports: [
     HttpClientModule,
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatMenuModule,

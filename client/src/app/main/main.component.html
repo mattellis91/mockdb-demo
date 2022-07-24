@@ -1,10 +1,37 @@
-<div class="container top-bar">
-    <mat-toolbar>
-    <span class="navbar-brand">mockdb</span>
-    <span class="example-spacer"></span>
-    <span class="nav-link active">Home</span>
-    <span class="nav-link">Sign in</span>
-    <span class="nav-link">Sign up</span>
-    </mat-toolbar>
-</div>
+<nav class="navbar navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">mockdb</a>
+        <ul class="nav navbar-nav pull-xs-right">
+            <li class="nav-item">
+                <!-- Add "active" class when you're on that page" -->
+                <a class="nav-link active" href="">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="ion-compose"></i>&nbsp;New Article
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="ion-gear-a"></i>&nbsp;Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/login']">Sign in</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/register']">Sign up</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <router-outlet></router-outlet>
+<footer>
+    <div class="container">
+        <a href="/" class="logo-font">conduit</a>
+        <span class="attribution">
+          An interactive learning project from <a href="https://thinkster.io">Thinkster</a>. Code &amp; design licensed under MIT.
+        </span>
+    </div>
+</footer>
+

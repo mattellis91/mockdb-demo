@@ -11,7 +11,7 @@ export class FeedComponent implements OnInit {
   constructor(private dataService:DataService) { }
 
   ngOnInit(): void {
-    this.dataService.makeEnpointGetRequest('').subscribe((res) => console.log(res))
+    this.dataService.makeEnpointGetRequest('articles/feed').subscribe((res) => console.log(res))
   }
 
 }
