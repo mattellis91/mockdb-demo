@@ -25,7 +25,8 @@ userRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(400).send("All input is required");
     }
     const userCollection = req.app.locals.dbConnection.collection('users');
-    const existingUserResponse = userCollection.find({ username: email });
+    const existingUserResponse = userCollection.find({ email: email });
+    console.log(existingUserResponse);
     if (existingUserResponse.status === mockdb_1.Responses.SUCCESS) {
         if (existingUserResponse.data.length === 0) {
             const encryptedPassword = yield bcryptjs_1.default.hash(password, 10);

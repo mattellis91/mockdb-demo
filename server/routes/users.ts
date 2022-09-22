@@ -16,7 +16,9 @@ userRouter.post('/', async (req, res) => {
     }
 
     const userCollection = req.app.locals.dbConnection.collection('users');
-    const existingUserResponse = userCollection.find({username:email});
+    const existingUserResponse = userCollection.find({email:email});
+
+    console.log(existingUserResponse);
  
     if(existingUserResponse.status === Responses.SUCCESS) {
         if(existingUserResponse.data.length === 0) {

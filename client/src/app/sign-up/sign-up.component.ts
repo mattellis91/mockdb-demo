@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataService } from '../services/data/data.service';
 import { UserService } from '../services/user/user.service';
 
@@ -18,7 +19,7 @@ export class SignUpComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private dataService:DataService, private userService:UserService) { }
+  constructor(private dataService:DataService, private userService:UserService, private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -30,7 +31,10 @@ export class SignUpComponent implements OnInit {
         email: this.singnUpForm.value.email,
         password: this.singnUpForm.value.password
       }
-    }).subscribe((res:any) => this.userService.setUserProperties(res.user));
+    }).subscribe((res:any) => {
+      this.userService.setUserProperties(res.user);
+      this.router.navigateByUrl('/');
+    });
   }
 
 }
