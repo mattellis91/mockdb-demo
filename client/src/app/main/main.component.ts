@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/data/data.service';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  constructor(public userService:UserService, private dataService:DataService) { }
 
   ngOnInit(): void {
+    if(localStorage.getItem('token')) {
+      this.dataService.makeEnpointGetRequest('users/').subscribe((res:any) => this.userService.setUserProperties(res.user));
+    }
   }
 
 }

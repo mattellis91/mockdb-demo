@@ -11,17 +11,26 @@
                     <i class="ion-compose"></i>&nbsp;New Article
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">
-                    <i class="ion-gear-a"></i>&nbsp;Settings
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/login']">Sign in</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/register']">Sign up</a>
-            </li>
+            <ng-container *ngIf="this.userService.user">
+                <li class="nav-item">
+                    <a class="nav-link" href="">
+                        <i class="ion-gear-a"></i>&nbsp;Settings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">
+                        {{userService.user.username}}
+                    </a>
+                </li>
+            </ng-container>
+            <ng-container *ngIf="!this.userService.user">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/login']">Sign in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/register']">Sign up</a>
+                </li>
+            </ng-container>
         </ul>
     </div>
 </nav>

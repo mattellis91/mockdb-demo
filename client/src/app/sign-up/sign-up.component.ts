@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../services/data/data.service';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +18,7 @@ export class SignUpComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private dataService:DataService) { }
+  constructor(private dataService:DataService, private userService:UserService) { }
 
   ngOnInit(): void {
   }
@@ -29,7 +30,7 @@ export class SignUpComponent implements OnInit {
         email: this.singnUpForm.value.email,
         password: this.singnUpForm.value.password
       }
-    }).subscribe((res) => console.log(res));
+    }).subscribe((res:any) => this.userService.setUserProperties(res.user));
   }
 
 }
