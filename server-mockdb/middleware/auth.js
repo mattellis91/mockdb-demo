@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyToken = void 0;
+exports.verifyToken = verifyToken;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config = process.env;
 function verifyToken(req, res, next) {
@@ -23,4 +23,3 @@ function verifyToken(req, res, next) {
     }
     return res.status(403).send("A token is required for authentication");
 }
-exports.verifyToken = verifyToken;

@@ -19,7 +19,7 @@ export class DataService {
     } : undefined;
   }
 
-  makeEnpointGetRequest(endpoint:string) {
+  makeEnpointGetRequest(endpoint:string){
     return this.http.get(this.apiBase + endpoint, this.getAuthHeaders());
   }
 

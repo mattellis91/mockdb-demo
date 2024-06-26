@@ -3,11 +3,11 @@ import { DataService } from '../services/data/data.service';
 import { Article } from '../types';
 
 @Component({
-  selector: 'app-feed',
-  templateUrl: './feed.component.html',
-  styleUrls: ['./feed.component.scss']
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss']
 })
-export class FeedComponent implements OnInit {
+export class SettingsComponent implements OnInit {
 
   constructor(private dataService:DataService) { }
 
