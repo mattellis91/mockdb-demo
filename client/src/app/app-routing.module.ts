@@ -7,6 +7,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditorComponent } from './editor/editor.component';
+import { ArticleComponent } from './article/article.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,14 @@ const routes: Routes = [
       {
         path: "editor",
         component: EditorComponent
+      },
+      {
+        path: "editor/:slug",
+        component: EditorComponent
+      },
+      {
+        path: "article/:slug",
+        component: ArticleComponent
       }
     ]
   }
