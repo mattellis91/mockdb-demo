@@ -40,4 +40,13 @@ export class ArticleComponent implements OnInit {
     this.router.navigate([`/editor/${this.article?.slug}`]);
   }
 
+  handleDelete() {
+    this.dataService.makeEndpointDeleteRequest(`articles/${this.article?.slug}`).subscribe(
+      (res:any) => {
+        console.log("sdf")
+        this.router.navigate(['/']);
+      }
+    );
+  }
+
 }

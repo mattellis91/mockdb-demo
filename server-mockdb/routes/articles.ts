@@ -46,9 +46,32 @@ articlesRouter.post('/', verifyToken, (req, res) => {
 
 });
 
+articlesRouter.put('/:slug', verifyToken, (req, res) => {
+    const articleCollection = req.app.locals.dbConnection.collection('articles');
+    const article = req.body.article;
+    const slug = req.params?.slug;
+
+    const articleRes = articleCollection.find({ slug: slug })
+
+    if(articleRes.status === Responses.SUCCESS) {
+
+        const newSlug =  slugify(article.title)
+        articleCollection.updateOne({ slug: slug }, {$set: {
+            ...article,
+            slug: newSlug
+        }});
+        res.send({
+            article: {...article, slug:newSlug}
+        });
+    } else {
+        res.status(404).send("Something went wrong");
+    }
+});
+
 articlesRouter.get('/:slug', (req, res) => {
     const articleCollection = req.app.locals.dbConnection.collection('articles');
     const slug = req.params?.slug;
+    console.log(slug);
     const articleRes = articleCollection.find({ slug: slug });
     console.log(articleRes.data);
     if(articleRes.status === Responses.SUCCESS) {
@@ -59,6 +82,24 @@ articlesRouter.get('/:slug', (req, res) => {
         res.status(404).send("Something went wrong");
     }
 });
+
+articlesRouter.delete('/:slug', verifyToken, (req, res) => {
+    const articleCollection = req.app.locals.dbConnection.collection('articles');
+    const slug = req.params?.slug;
+    const articleRes = articleCollection.find({ slug: slug });
+
+    console.log(articleRes.data[0])
+
+    if(articleRes.status === Responses.SUCCESS) {
+        articleCollection.remove({ slug: slug });
+        res.send({
+            article: articleRes.data[0]
+        });
+    } else {
+        res.status(404).send("Something went wrong");
+    }
+});
+
 
 
 module.exports = articlesRouter;

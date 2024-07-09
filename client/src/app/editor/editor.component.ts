@@ -32,11 +32,13 @@ export class EditorComponent implements OnInit {
   articles:Article[] = []
   tags:Tag[] = []
   article:Article | undefined = undefined;
+  articleSlug:string = '';
 
   ngOnInit(): void {
     this.tagsFc = this.articleFg.get('tags') as FormControl;
     const slug = this.router.url.split('/')[2];
     if(slug) {
+      this.articleSlug = slug;
       this.dataService.makeEnpointGetRequest(`articles/${slug}`).subscribe(
         (res:any) => {
           this.article = res.article;
@@ -82,11 +84,23 @@ export class EditorComponent implements OnInit {
     }
     delete article.tags;
     console.log(article);
-    this.dataService.makeEndpointPostRequest('articles', {article:article}).subscribe((response) => {
-      if((response as {article:Article}).article) {
-        this.router.navigateByUrl(`/article/${(response as {article:Article}).article.slug}`)
-      }
-    })
+
+    if(this.articleSlug) {
+      console.log(this.articleSlug)
+      this.dataService.makeEndpointPutRequest(`articles/${this.articleSlug}`, {article:article}).subscribe((response) => {
+        console.log(response)
+        if((response as {article:Article}).article) {
+          this.router.navigateByUrl(`/article/${(response as {article:Article}).article.slug}`)
+        }
+      })
+      return
+    } else {
+      this.dataService.makeEndpointPostRequest('articles', {article:article}).subscribe((response) => {
+        if((response as {article:Article}).article) {
+          this.router.navigateByUrl(`/article/${(response as {article:Article}).article.slug}`)
+        }
+      })
+    }
   }
 
 }

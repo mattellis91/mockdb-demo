@@ -35,13 +35,47 @@ articlesRouter.post('/', auth_1.verifyToken, (req, res) => {
         res.status(500).send("Something went wrong");
     }
 });
+articlesRouter.put('/:slug', auth_1.verifyToken, (req, res) => {
+    var _a;
+    const articleCollection = req.app.locals.dbConnection.collection('articles');
+    const article = req.body.article;
+    const slug = (_a = req.params) === null || _a === void 0 ? void 0 : _a.slug;
+    const articleRes = articleCollection.find({ slug: slug });
+    if (articleRes.status === mockdb_1.Responses.SUCCESS) {
+        const newSlug = (0, slugify_1.default)(article.title);
+        articleCollection.updateOne({ slug: slug }, { $set: Object.assign(Object.assign({}, article), { slug: newSlug }) });
+        res.send({
+            article: Object.assign(Object.assign({}, article), { slug: newSlug })
+        });
+    }
+    else {
+        res.status(404).send("Something went wrong");
+    }
+});
 articlesRouter.get('/:slug', (req, res) => {
     var _a;
     const articleCollection = req.app.locals.dbConnection.collection('articles');
     const slug = (_a = req.params) === null || _a === void 0 ? void 0 : _a.slug;
+    console.log(slug);
     const articleRes = articleCollection.find({ slug: slug });
     console.log(articleRes.data);
     if (articleRes.status === mockdb_1.Responses.SUCCESS) {
+        res.send({
+            article: articleRes.data[0]
+        });
+    }
+    else {
+        res.status(404).send("Something went wrong");
+    }
+});
+articlesRouter.delete('/:slug', auth_1.verifyToken, (req, res) => {
+    var _a;
+    const articleCollection = req.app.locals.dbConnection.collection('articles');
+    const slug = (_a = req.params) === null || _a === void 0 ? void 0 : _a.slug;
+    const articleRes = articleCollection.find({ slug: slug });
+    console.log(articleRes.data[0]);
+    if (articleRes.status === mockdb_1.Responses.SUCCESS) {
+        articleCollection.remove({ slug: slug });
         res.send({
             article: articleRes.data[0]
         });

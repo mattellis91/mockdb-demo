@@ -26,4 +26,12 @@ export class DataService {
   makeEndpointPostRequest(endpoint:string, payload:Record<string, unknown>) {
     return this.http.post(this.apiBase + endpoint, payload, this.getAuthHeaders());
   }
+
+  makeEndpointPutRequest(endpoint:string, payload:Record<string, unknown>) {
+    return this.http.put(this.apiBase + endpoint, payload, this.getAuthHeaders());
+  }
+
+  makeEndpointDeleteRequest(endpoint:string) {
+    return this.http.delete(this.apiBase + endpoint, this.getAuthHeaders());
+  }
 }
