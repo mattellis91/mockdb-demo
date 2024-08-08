@@ -19,8 +19,9 @@ articlesRouter.get('/feed', (req, res) => {
             if(!authorData[articles.data[i].author]) {
                 const authorResponse = authorCollection.findById(articles.data[i].author);
                 if(authorResponse.status === Responses.SUCCESS) {
+                    delete authorResponse.data[0].password;
                     authorData[articles.data[i].author] = authorResponse.data[0];
-                    articles.data[i].author = authorResponse.data[0]
+                    articles.data[i].author = authorResponse.data[0];
                 }
             } else {
                 articles.data[i].author = authorData[articles.data[i].author]
@@ -50,7 +51,7 @@ articlesRouter.post('/', verifyToken, (req, res) => {
 
     const newArticle = {
         ...article,
-        author: existingUserResponse.data[0].username,
+        author: existingUserResponse.data[0]._id,
         slug: slugify(article.title),
     }
 

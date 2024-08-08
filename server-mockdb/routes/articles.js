@@ -18,6 +18,7 @@ articlesRouter.get('/feed', (req, res) => {
             if (!authorData[articles.data[i].author]) {
                 const authorResponse = authorCollection.findById(articles.data[i].author);
                 if (authorResponse.status === mockdb_1.Responses.SUCCESS) {
+                    delete authorResponse.data[0].password;
                     authorData[articles.data[i].author] = authorResponse.data[0];
                     articles.data[i].author = authorResponse.data[0];
                 }
@@ -40,7 +41,7 @@ articlesRouter.post('/', auth_1.verifyToken, (req, res) => {
     if (existingUserResponse.status !== mockdb_1.Responses.SUCCESS) {
         res.status(500).send("Something went wrong");
     }
-    const newArticle = Object.assign(Object.assign({}, article), { author: existingUserResponse.data[0].username, slug: (0, slugify_1.default)(article.title) });
+    const newArticle = Object.assign(Object.assign({}, article), { author: existingUserResponse.data[0]._id, slug: (0, slugify_1.default)(article.title) });
     articleCollection.insertOne(newArticle);
     if (existingUserResponse.status === mockdb_1.Responses.SUCCESS) {
         res.send({

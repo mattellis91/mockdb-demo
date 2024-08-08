@@ -34,7 +34,9 @@ userRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 username: username,
                 email: email,
                 password: encryptedPassword,
-                image: `https://avatar.iran.liara.run/username?username=${username}`
+                image: `https://avatar.iran.liara.run/username?username=${username}`,
+                followers: [],
+                favourites: [],
             });
             const token = jsonwebtoken_1.default.sign({ user_id: userInsertResponse.data[0]._id, email }, process.env.TOKEN_KEY, {
                 expiresIn: '2h'
@@ -43,7 +45,8 @@ userRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 user: {
                     email: email,
                     token: token,
-                    username: username
+                    username: username,
+                    _id: userInsertResponse.data[0]._id
                 }
             });
         }
@@ -64,7 +67,8 @@ userRouter.get('/', auth_1.verifyToken, (req, res) => {
             user: {
                 email: existingUserResponse.data[0].email,
                 token: req.token,
-                username: existingUserResponse.data[0].username
+                username: existingUserResponse.data[0].username,
+                _id: existingUserResponse.data[0]._id
             }
         });
     }
@@ -89,7 +93,8 @@ userRouter.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, functi
                 user: {
                     email: email,
                     token: token,
-                    username: existingUserResponse.data[0].username
+                    username: existingUserResponse.data[0].username,
+                    _id: existingUserResponse.data[0]._id,
                 }
             });
         }

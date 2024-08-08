@@ -18,6 +18,7 @@ app.use(bodyParser.json())
 app.use('/api/articles', require('./routes/articles'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/tags', require('./routes/tags'));
+app.use('/api/profiles', require('./routes/profiles'));
 
 app.listen(port, async () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
@@ -236,9 +237,13 @@ async function seedArticles() {
 
     const articleData = [];
     const tagsData:{_id:string, tag:string}[] = [];
-    const authorData:{_id:string, username:string, image:string | null, password:string, email:string}[] = [];
 
     const defaultPaswword = await bcrypt.hash('password', 10);
+
+    const authorData:{_id:string, username:string, image:string | null, password:string, email:string, followers: []}[] = [
+      //initial users
+      {_id: cuid(), username: "Matt Ellis", image: `https://avatar.iran.liara.run/username?username=Matt Ellis`, email:"mattellis@email.com", password: defaultPaswword, followers: []}
+    ];
 
     for(const item of data) {
       const articleTags = [];
@@ -254,6 +259,7 @@ async function seedArticles() {
       }
 
       let existingAuthor = authorData.find(a => a.username === item.author);
+      
       if(!existingAuthor) {
 
         const image = `https://avatar.iran.liara.run/username?username=${item.author}`
@@ -261,9 +267,12 @@ async function seedArticles() {
         const authorEmail = `${emailPrefix}@email.com`;
 
         const authorId = cuid();
-        authorData.push({_id: authorId, username: item.author, image: image, email:authorEmail, password: defaultPaswword});
-        existingAuthor = {_id: authorId, username: item.author, image: image, email:authorEmail, password: defaultPaswword};
+        authorData.push({_id: authorId, username: item.author, image: image, email:authorEmail, password: defaultPaswword, followers: []});
+        existingAuthor = {_id: authorId, username: item.author, image: image, email:authorEmail, password: defaultPaswword, followers: []};
       }
+
+      const randomFavouritesCount = Math.floor(Math.random() * 30); 
+
       articleData.push({
         _id: cuid(),
         title: item.title,
@@ -273,7 +282,8 @@ async function seedArticles() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         slug: item.slug,
-        description: item.description
+        description: item.description,
+        favoritesCount: randomFavouritesCount
       })
     };
 

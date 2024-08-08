@@ -9,21 +9,27 @@
           <a href="/profile/eric-simons" class="author">{{article?.author?.username}}</a>
           <span class="date">January 20th</span>
         </div>
-        <button class="btn btn-sm btn-outline-secondary">
+        <button *ngIf="!followingAuthor" class="btn btn-sm btn-outline-secondary" (click)="followAuthor()">
           <i class="ion-plus-round"></i>
-          &nbsp; Follow {{article?.author?.username}} <span class="counter">(10)</span>
+          &nbsp; Follow {{article?.author?.username}} <span class="counter">({{getFollowers()}})</span>
+        </button>
+        <button *ngIf="followingAuthor" class="btn btn-sm btn-outline-secondary" (click)="unfollowAuthor()">
+          <i class="ion-minus-round"></i>
+          &nbsp; Unfollow {{article?.author?.username}} <span class="counter">({{getFollowers()}})</span>
         </button>
         &nbsp;&nbsp;
         <button class="btn btn-sm btn-outline-primary">
           <i class="ion-heart"></i>
-          &nbsp; Favorite Post <span class="counter">(29)</span>
+          &nbsp; Favorite Post <span class="counter">({{article?.favoritesCount}})</span>
         </button>
-        <button class="btn btn-sm btn-outline-secondary" (click)="handleEdit()">
-          <i class="ion-edit"></i> Edit Article
-        </button>
-        <button class="btn btn-sm btn-outline-danger" (click)="handleDelete()">
-          <i class="ion-trash-a"></i> Delete Article
-        </button>
+        <ng-container *ngIf="checkUserIsAuthor()">
+          <button class="btn btn-sm btn-outline-secondary" (click)="handleEdit()">
+            <i class="ion-edit"></i> Edit Article
+          </button>
+          <button class="btn btn-sm btn-outline-danger" (click)="handleDelete()">
+            <i class="ion-trash-a"></i> Delete Article
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>
@@ -54,21 +60,24 @@
           <span class="date">January 20th</span>
         </div>
 
-        <button class="btn btn-sm btn-outline-secondary">
+        <button *ngIf="followingAuthor" class="btn btn-sm btn-outline-secondary">
           <i class="ion-plus-round"></i>
           &nbsp; Follow Eric Simons
         </button>
+
         &nbsp;
         <button class="btn btn-sm btn-outline-primary">
           <i class="ion-heart"></i>
           &nbsp; Favorite Article <span class="counter">(29)</span>
         </button>
-        <button class="btn btn-sm btn-outline-secondary" (click)="handleEdit()">
-          <i class="ion-edit"></i> Edit Article
-        </button>
-        <button class="btn btn-sm btn-outline-danger" (click)="handleDelete()">
-          <i class="ion-trash-a"></i> Delete Article
-        </button>
+        <ng-container *ngIf="checkUserIsAuthor()">
+          <button class="btn btn-sm btn-outline-secondary" (click)="handleEdit()">
+            <i class="ion-edit"></i> Edit Article
+          </button>
+          <button class="btn btn-sm btn-outline-danger" (click)="handleDelete()">
+            <i class="ion-trash-a"></i> Delete Article
+          </button>
+        </ng-container>
       </div>
     </div>
 

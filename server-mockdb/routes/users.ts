@@ -27,7 +27,9 @@ userRouter.post('/', async (req, res) => {
                 username:username,
                 email:email,
                 password:encryptedPassword,
-                image: `https://avatar.iran.liara.run/username?username=${username}`
+                image: `https://avatar.iran.liara.run/username?username=${username}`,
+                followers: [],
+                favourites: [],
             });
 
             const token = jwt.sign(  
@@ -42,7 +44,8 @@ userRouter.post('/', async (req, res) => {
                 user: {
                     email:email,
                     token:token,
-                    username:username
+                    username:username,
+                    _id: userInsertResponse.data[0]._id
                 }
             });
 
@@ -67,7 +70,8 @@ userRouter.get('/', verifyToken, (req,res) => {
             user: {
                 email:existingUserResponse.data[0].email,
                 token:(req as unknown as Record<string, unknown>).token,
-                username:existingUserResponse.data[0].username
+                username:existingUserResponse.data[0].username,
+                _id: existingUserResponse.data[0]._id
             }
         });   
     } else {
@@ -103,7 +107,8 @@ userRouter.post('/login', async (req, res) => {
                 user: {
                     email:email,
                     token:token,
-                    username:existingUserResponse.data[0].username
+                    username:existingUserResponse.data[0].username,
+                    _id: existingUserResponse.data[0]._id, 
                 }
             });
 

@@ -23,21 +23,33 @@ export class ArticleComponent implements OnInit {
   constructor(private dataService:DataService, public userService:UserService, private router: Router) { }
 
   article:Article | undefined = undefined;
+  followingAuthor = false;
 
   ngOnInit(): void {
 
     const slug = this.router.url.split('/')[2];
 
+    console.log(this.userService.user)
+
     this.dataService.makeEnpointGetRequest(`articles/${slug}`).subscribe(
       (res:any) => {
         this.article = res.article;
-        console.log(this.article);
+        if(this.article?.author.followers) {
+          const foundFollower = this.article.author.followers.find((follower) => follower === this.userService.user?._id);
+          console.log(foundFollower);
+          console.log(this.userService.user)
+          this.followingAuthor = this.article.author.followers.find((follower) => follower === this.userService.user?._id) ? true : false
+        }
       }
     );
   }
 
   handleEdit() {
     this.router.navigate([`/editor/${this.article?.slug}`]);
+  }
+
+  checkUserIsAuthor() {
+    return this.userService.user && this.article?.author && this.userService.user?._id === this.article.author?._id
   }
 
   handleDelete() {
@@ -47,6 +59,29 @@ export class ArticleComponent implements OnInit {
         this.router.navigate(['/']);
       }
     );
+  }
+
+  followAuthor() {
+    this.dataService.makeEndpointPostRequest(`profiles/${this.article?.author._id}/follow`, {
+      followerId: this.userService.user?._id
+    }).subscribe()
+    this.article?.author.followers?.push(this.userService.user?._id as string);
+    this.followingAuthor = true;
+  }
+
+  unfollowAuthor() {
+    this.dataService.makeEndpointPostRequest(`profiles/${this.article?.author._id}/unfollow`, {
+      followerId: this.userService.user?._id
+    }).subscribe()
+    const index = this.article?.author.followers?.findIndex((follower) => follower === this.userService.user?._id as string);
+    if(index !== undefined && index >= 0) {
+      this.article?.author.followers?.splice(index, 1);
+    }
+    this.followingAuthor = false;
+  }
+
+  getFollowers() {
+    return this.article?.author?.followers ? this.article.author.followers.length : 0; 
   }
 
 }

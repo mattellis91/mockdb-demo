@@ -10,7 +10,8 @@ export interface Author {
     username:string;
     bio:string | null;
     image:string | null;
-    following:boolean;
+    followers: string[] | null;
+    _id: string;
 }
 
 export interface Article {

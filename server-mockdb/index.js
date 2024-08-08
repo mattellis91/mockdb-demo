@@ -27,6 +27,7 @@ app.use(body_parser_1.default.json());
 app.use('/api/articles', require('./routes/articles'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/tags', require('./routes/tags'));
+app.use('/api/profiles', require('./routes/profiles'));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
     const dbConnection = mockdb_1.MockDb.connect('demo-db');
@@ -239,8 +240,11 @@ function seedArticles() {
         const content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in velit ut mi venenatis dictum. Mauris accumsan mi vel neque iaculis, in sodales tortor tristique. Cras auctor eget eros id suscipit. Sed convallis nulla ac nisi consequat, vitae finibus lorem placerat. Nunc scelerisque, lectus id tincidunt molestie, nisi nisi venenatis odio, at dictum eros sapien id ipsum. Phasellus euismod eget tortor eget efficitur. Nulla sed mi eu lacus tincidunt malesuada. Curabitur gravida nisi id purus laoreet suscipit. Fusce in ligula ac erat ultricies viverra. Donec et leo non lectus efficitur consequat. Duis commodo, velit sit amet sodales sollicitudin, tellus sapien semper lorem, et congue nunc est non velit";
         const articleData = [];
         const tagsData = [];
-        const authorData = [];
         const defaultPaswword = yield bcryptjs_1.default.hash('password', 10);
+        const authorData = [
+            //initial users
+            { _id: (0, cuid_1.default)(), username: "Matt Ellis", image: `https://avatar.iran.liara.run/username?username=Matt Ellis`, email: "mattellis@email.com", password: defaultPaswword, followers: [] }
+        ];
         for (const item of data) {
             const articleTags = [];
             for (const tag of item.tags) {
@@ -260,9 +264,10 @@ function seedArticles() {
                 const emailPrefix = item.author.toLowerCase().replace(' ', '');
                 const authorEmail = `${emailPrefix}@email.com`;
                 const authorId = (0, cuid_1.default)();
-                authorData.push({ _id: authorId, username: item.author, image: image, email: authorEmail, password: defaultPaswword });
-                existingAuthor = { _id: authorId, username: item.author, image: image, email: authorEmail, password: defaultPaswword };
+                authorData.push({ _id: authorId, username: item.author, image: image, email: authorEmail, password: defaultPaswword, followers: [] });
+                existingAuthor = { _id: authorId, username: item.author, image: image, email: authorEmail, password: defaultPaswword, followers: [] };
             }
+            const randomFavouritesCount = Math.floor(Math.random() * 30);
             articleData.push({
                 _id: (0, cuid_1.default)(),
                 title: item.title,
@@ -272,7 +277,8 @@ function seedArticles() {
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 slug: item.slug,
-                description: item.description
+                description: item.description,
+                favoritesCount: randomFavouritesCount
             });
         }
         ;

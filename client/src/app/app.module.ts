@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import { FeedComponent } from './feed/feed.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatChipsModule} from '@angular/material/chips'
 import { EditorComponent } from './editor/editor.component';
+import { ArticleComponent } from './article/article.component';
 
 @NgModule({
   declarations: [
@@ -23,11 +25,13 @@ import { EditorComponent } from './editor/editor.component';
     SignInComponent,
     SignUpComponent,
     FeedComponent,
-    EditorComponent
+    EditorComponent,
+    ArticleComponent
   ],
   imports: [
-    HttpClientModule,
+    CommonModule,
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
