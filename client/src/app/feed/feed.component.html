@@ -23,9 +23,9 @@
   
           <div *ngFor="let article of articles" class="article-preview">
             <div class="article-meta">
-              <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+              <a href="/profile/eric-simons"><img src="{{article.author.image}}" /></a>
               <div class="info">
-                <a href="/profile/eric-simons" class="author">{{article.author}}</a>
+                <a href="/profile/eric-simons" class="author">{{article.author.username}}</a>
                 <span class="date">January 20th</span>
               </div>
               <button class="btn btn-outline-primary btn-sm pull-xs-right">

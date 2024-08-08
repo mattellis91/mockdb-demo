@@ -26,7 +26,8 @@ userRouter.post('/', async (req, res) => {
             const userInsertResponse = userCollection.insertOne({
                 username:username,
                 email:email,
-                password:encryptedPassword
+                password:encryptedPassword,
+                image: `https://avatar.iran.liara.run/username?username=${username}`
             });
 
             const token = jwt.sign(  

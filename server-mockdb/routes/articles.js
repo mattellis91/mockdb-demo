@@ -11,6 +11,22 @@ const articlesRouter = express_1.default.Router();
 articlesRouter.get('/feed', (req, res) => {
     const articleCollection = req.app.locals.dbConnection.collection('articles');
     const articles = articleCollection.find();
+    const authorData = {};
+    if (articles.data.length) {
+        const authorCollection = req.app.locals.dbConnection.collection('users');
+        for (let i = 0; i < articles.data.length; i++) {
+            if (!authorData[articles.data[i].author]) {
+                const authorResponse = authorCollection.findById(articles.data[i].author);
+                if (authorResponse.status === mockdb_1.Responses.SUCCESS) {
+                    authorData[articles.data[i].author] = authorResponse.data[0];
+                    articles.data[i].author = authorResponse.data[0];
+                }
+            }
+            else {
+                articles.data[i].author = authorData[articles.data[i].author];
+            }
+        }
+    }
     res.send({
         articles: articles.data,
         articlesCount: articles.data.length
@@ -60,6 +76,11 @@ articlesRouter.get('/:slug', (req, res) => {
     const articleRes = articleCollection.find({ slug: slug });
     console.log(articleRes.data);
     if (articleRes.status === mockdb_1.Responses.SUCCESS) {
+        const authorCollection = req.app.locals.dbConnection.collection('users');
+        const authorResponse = authorCollection.findById(articleRes.data[0].author);
+        if (authorResponse.status === mockdb_1.Responses.SUCCESS) {
+            articleRes.data[0].author = authorResponse.data[0];
+        }
         res.send({
             article: articleRes.data[0]
         });

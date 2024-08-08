@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 
 import { MockDb } from '@mattellis91/mockdb';
 import cuid from 'cuid';
+import bcrypt from 'bcryptjs';
  
 dotenv.config();
 
@@ -18,7 +19,7 @@ app.use('/api/articles', require('./routes/articles'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/tags', require('./routes/tags'));
 
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
   const dbConnection = MockDb.connect('demo-db');
   app.locals.dbConnection = dbConnection;
@@ -26,12 +27,12 @@ app.listen(port, () => {
   const articles = dbConnection.collection('articles');
 
   if(!articles.count()) {
-    seedArticles();
+    await seedArticles();
   }
   
 });
 
-function seedArticles() {
+async function seedArticles() {
   const data = [
     {
       "title": "The Future of Artificial Intelligence in Healthcare",
@@ -235,7 +236,9 @@ function seedArticles() {
 
     const articleData = [];
     const tagsData:{_id:string, tag:string}[] = [];
-    const authorData:{_id:string, firstName:string, lastName:string}[] = [];
+    const authorData:{_id:string, username:string, image:string | null, password:string, email:string}[] = [];
+
+    const defaultPaswword = await bcrypt.hash('password', 10);
 
     for(const item of data) {
       const articleTags = [];
@@ -249,12 +252,17 @@ function seedArticles() {
           tagsData.push({_id: tagId, tag});
         }
       }
-      const authorName = item.author.split(' ');
-      let existingAuthor = authorData.find(a => a.firstName === authorName[0] && a.lastName === authorName[1]);
+
+      let existingAuthor = authorData.find(a => a.username === item.author);
       if(!existingAuthor) {
+
+        const image = `https://avatar.iran.liara.run/username?username=${item.author}`
+        const emailPrefix = item.author.toLowerCase().replace(' ', '');
+        const authorEmail = `${emailPrefix}@email.com`;
+
         const authorId = cuid();
-        authorData.push({_id: authorId, firstName: authorName[0], lastName: authorName[1]});
-        existingAuthor = {_id: authorId, firstName: authorName[0], lastName: authorName[1]};
+        authorData.push({_id: authorId, username: item.author, image: image, email:authorEmail, password: defaultPaswword});
+        existingAuthor = {_id: authorId, username: item.author, image: image, email:authorEmail, password: defaultPaswword};
       }
       articleData.push({
         _id: cuid(),
@@ -271,7 +279,7 @@ function seedArticles() {
 
     const tags = app.locals.dbConnection.collection('tags');
     tags.insertMany(tagsData);
-    const authors = app.locals.dbConnection.collection('authors');
+    const authors = app.locals.dbConnection.collection('users');
     authors.insertMany(authorData);
     const articles = app.locals.dbConnection.collection('articles');
     articles.insertMany(articleData);

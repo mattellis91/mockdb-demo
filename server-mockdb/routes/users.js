@@ -33,7 +33,8 @@ userRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
             const userInsertResponse = userCollection.insertOne({
                 username: username,
                 email: email,
-                password: encryptedPassword
+                password: encryptedPassword,
+                image: `https://avatar.iran.liara.run/username?username=${username}`
             });
             const token = jsonwebtoken_1.default.sign({ user_id: userInsertResponse.data[0]._id, email }, process.env.TOKEN_KEY, {
                 expiresIn: '2h'
