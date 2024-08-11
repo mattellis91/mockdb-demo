@@ -271,8 +271,6 @@ async function seedArticles() {
         existingAuthor = {_id: authorId, username: item.author, image: image, email:authorEmail, password: defaultPaswword, followers: []};
       }
 
-      const randomFavouritesCount = Math.floor(Math.random() * 30); 
-
       articleData.push({
         _id: cuid(),
         title: item.title,
@@ -283,7 +281,7 @@ async function seedArticles() {
         updatedAt: new Date().toISOString(),
         slug: item.slug,
         description: item.description,
-        favoritesCount: randomFavouritesCount
+        favourites: []
       })
     };
 

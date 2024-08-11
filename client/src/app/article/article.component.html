@@ -10,17 +10,17 @@
           <span class="date">January 20th</span>
         </div>
         <button *ngIf="!followingAuthor" class="btn btn-sm btn-outline-secondary" (click)="followAuthor()">
-          <i class="ion-plus-round"></i>
+          <i class="ion-eye"></i>
           &nbsp; Follow {{article?.author?.username}} <span class="counter">({{getFollowers()}})</span>
         </button>
         <button *ngIf="followingAuthor" class="btn btn-sm btn-outline-secondary" (click)="unfollowAuthor()">
-          <i class="ion-minus-round"></i>
+          <i class="ion-eye"></i>
           &nbsp; Unfollow {{article?.author?.username}} <span class="counter">({{getFollowers()}})</span>
         </button>
         &nbsp;&nbsp;
         <button class="btn btn-sm btn-outline-primary">
           <i class="ion-heart"></i>
-          &nbsp; Favorite Post <span class="counter">({{article?.favoritesCount}})</span>
+          &nbsp; Favorite Post <span class="counter">({{article?.favourites?.length ?? 0}})</span>
         </button>
         <ng-container *ngIf="checkUserIsAuthor()">
           <button class="btn btn-sm btn-outline-secondary" (click)="handleEdit()">
@@ -60,9 +60,14 @@
           <span class="date">January 20th</span>
         </div>
 
-        <button *ngIf="followingAuthor" class="btn btn-sm btn-outline-secondary">
-          <i class="ion-plus-round"></i>
-          &nbsp; Follow Eric Simons
+        <button *ngIf="!followingAuthor" class="btn btn-sm btn-outline-secondary" (click)="followAuthor()">
+          <i class="ion-eye"></i>
+          &nbsp; Follow {{article?.author?.username}} <span class="counter">({{getFollowers()}})</span>
+        </button>
+
+        <button *ngIf="followingAuthor" class="btn btn-sm btn-outline-secondary" (click)="unfollowAuthor()">
+          <i class="ion-eye"></i>
+          &nbsp; Unfollow {{article?.author?.username}} <span class="counter">({{getFollowers()}})</span>
         </button>
 
         &nbsp;

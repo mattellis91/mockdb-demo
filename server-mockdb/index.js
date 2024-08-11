@@ -267,7 +267,6 @@ function seedArticles() {
                 authorData.push({ _id: authorId, username: item.author, image: image, email: authorEmail, password: defaultPaswword, followers: [] });
                 existingAuthor = { _id: authorId, username: item.author, image: image, email: authorEmail, password: defaultPaswword, followers: [] };
             }
-            const randomFavouritesCount = Math.floor(Math.random() * 30);
             articleData.push({
                 _id: (0, cuid_1.default)(),
                 title: item.title,
@@ -278,7 +277,7 @@ function seedArticles() {
                 updatedAt: new Date().toISOString(),
                 slug: item.slug,
                 description: item.description,
-                favoritesCount: randomFavouritesCount
+                favourites: []
             });
         }
         ;

@@ -22,8 +22,7 @@ export interface Article {
     tagList:string[];
     createdAt:string;
     updatedAt:string;
-    favorited:boolean;
-    favoritesCount:number;
+    favourites:string[];
     author:Author;
 }
 
